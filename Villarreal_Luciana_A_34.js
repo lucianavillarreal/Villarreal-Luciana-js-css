@@ -3,12 +3,24 @@ const prompt = require('prompt-sync')();
 //un arreglo con los nombres de los países que cumplan con las condiciones, devolverá un objeto con una key ‘nombres’ 
 //que tendrá como valor un arreglo con los nombres de los países y otra llamada ‘población total’ cuyo valor sea la suma
 //de las poblaciones de los países filtrados.
+
 function doubleFilter(paises, continente, poblacion) {
   let paisesFiltrados = paises.filter(function(pais) {
     return pais.continente === continente && pais.poblacion >= poblacion;
   });
 
-  return paisesFiltrados;
+  let nombres = paisesFiltrados.map(function(pais) {
+    return pais.nombre;
+  });
+
+  let poblacionTotal = paisesFiltrados.reduce(function(total, pais) {
+    return total + pais.poblacion;
+  }, 0);
+
+  return {
+    nombres: nombres,
+    'población total': poblacionTotal
+  };
 }
 
 var paises = [
@@ -27,11 +39,10 @@ var paises = [
   {nombre: "portugal", continente: "europa", poblacion: 4000000},
   {nombre: "grecia", continente: "europa", poblacion: 12000000},
 ];
-num = prompt("ingrese el continente que quiere que se muestre: ");
-num1 = prompt("ingrese la poblacion minima: ");
-let continente = num;
-let poblacionMinima = num1;
 
-let paisesFiltrados = doubleFilter(paises, continente, poblacionMinima);
-console.log(paisesFiltrados);
+let continente = prompt("Ingrese el continente que desea filtrar: ");
+let poblacionMinima = Number(prompt("Ingrese la población mínima: "));
+
+let resultado = doubleFilter(paises, continente, poblacionMinima);
+console.log(resultado);
 
